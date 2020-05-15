@@ -1,7 +1,9 @@
 package it.fjacquin.ppmtool.services;
 
+import it.fjacquin.ppmtool.domain.Backlog;
 import it.fjacquin.ppmtool.domain.Project;
 import it.fjacquin.ppmtool.exceptions.ProjectIdException;
+import it.fjacquin.ppmtool.repositories.BacklogRepository;
 import it.fjacquin.ppmtool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,13 +11,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectService {
 
-   @Autowired
+    @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private BacklogRepository backlogRepository;
 
      public Project saveOrUpdateProject(Project project){
 
          try{
              project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+
+             if(project.getId() == null){
+                 Backlog backlog = new Backlog();
+                 project.setBacklog(backlog);
+                 backlog.setProject(project);
+                 backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+             }
+
+             if(project.getId() != null){
+
+                 Backlog backlog = backlogRepository.
+                         findByProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+
+                 project.setBacklog(backlog);
+             }
+
              return  projectRepository.save(project);
          } catch (Exception e){
              throw new ProjectIdException("Project ID '" +
