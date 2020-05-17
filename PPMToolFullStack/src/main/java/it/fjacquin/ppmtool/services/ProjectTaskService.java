@@ -24,14 +24,15 @@ public class ProjectTaskService {
           Integer BacklogSequence = backlog.getPTSequence();
           BacklogSequence++;
 
+          backlog.setPTSequence(BacklogSequence);
+
           projectTask.setProjectSequence(projectIdentifier + "-" + BacklogSequence);
           projectTask.setProjectIdentifier(projectIdentifier);
 
-          /*
-          if (projectTask.getPriority() == 0 || projectTask.getPriority() == null){
+          //Con React bisognerà aggiungere anche projectTask.getPriority() = 0
+          if (projectTask.getPriority() == null){
                projectTask.setPriority(3);
           }
-          */
 
           if (projectTask.getStatus() == "" || projectTask.getStatus() == null){
                projectTask.setStatus("TO_DO");
