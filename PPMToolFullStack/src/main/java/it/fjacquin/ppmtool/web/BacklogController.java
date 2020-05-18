@@ -26,9 +26,9 @@ public class BacklogController {
     public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask projectTask,
                                             BindingResult result, @PathVariable String backlog_id){
 
-        ResponseEntity<?> erroMap = mapValidationErrorService.mapValidationService(result);
-        if(erroMap != null){
-            return erroMap;
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+        if(errorMap != null){
+            return errorMap;
         }
 
         ProjectTask projectTask1 = projectTaskService.addProjectTask(backlog_id, projectTask);
@@ -38,7 +38,7 @@ public class BacklogController {
     }
 
     @GetMapping("/{backlog_id}")
-    public Iterable<ProjectTask > getProjectBacklog(@PathVariable String backlog_id){
+    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id){
         return projectTaskService.findBacklogById(backlog_id);
     }
 
