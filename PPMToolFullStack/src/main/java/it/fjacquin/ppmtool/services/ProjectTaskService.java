@@ -37,7 +37,7 @@ public class ProjectTaskService {
                projectTask.setProjectIdentifier(projectIdentifier);
 
                //Con React bisognerà aggiungere anche projectTask.getPriority() = 0
-               if (projectTask.getPriority() == null){
+               if (projectTask.getPriority() == 0 || projectTask.getPriority() == null){
                     projectTask.setPriority(3);
                }
 
