@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 class AddProjectTask extends Component {
   constructor(props) {
     super(props);
-
     const { id } = this.props.match.params;
 
     this.state = {
@@ -30,14 +29,11 @@ class AddProjectTask extends Component {
     }
   }
 
-  //onchange
-
+  // on change
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-
-  //onsubmit
-
+  //on submit
   onSubmit(e) {
     e.preventDefault();
 
@@ -48,7 +44,6 @@ class AddProjectTask extends Component {
       priority: this.state.priority,
       dueDate: this.state.dueDate,
     };
-
     this.props.addProjectTask(
       this.state.projectIdentifier,
       newTask,
@@ -59,7 +54,6 @@ class AddProjectTask extends Component {
   render() {
     const { id } = this.props.match.params;
     const { errors } = this.state;
-
     return (
       <div className="add-PBI">
         <div className="container">
@@ -93,7 +87,7 @@ class AddProjectTask extends Component {
                     name="acceptanceCriteria"
                     value={this.state.acceptanceCriteria}
                     onChange={this.onChange}
-                  ></textarea>
+                  />
                 </div>
                 <h6>Due Date</h6>
                 <div className="form-group">
