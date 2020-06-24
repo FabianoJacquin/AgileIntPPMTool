@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/project")
@@ -24,7 +25,7 @@ public class ProjectController {
 
     @PostMapping("")
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project,
-                                                    BindingResult result){
+                                              BindingResult result, Principal principal){
 
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
 
@@ -32,8 +33,8 @@ public class ProjectController {
             return errorMap;
         }
 
-        projectService.saveOrUpdateProject(project);
-        return new ResponseEntity<Project>(project, HttpStatus.CREATED);
+        Project project1 = projectService.saveOrUpdateProject(project, principal.getName());
+        return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
 
     }
 
