@@ -1,7 +1,6 @@
 package it.fjacquin.ppmtool.services;
 
 import it.fjacquin.ppmtool.domain.Backlog;
-import it.fjacquin.ppmtool.domain.Project;
 import it.fjacquin.ppmtool.domain.ProjectTask;
 import it.fjacquin.ppmtool.exceptions.ProjectNotFoundException;
 import it.fjacquin.ppmtool.repositories.BacklogRepository;
@@ -22,10 +21,14 @@ public class ProjectTaskService {
      @Autowired
      private ProjectRepository projectRepository;
 
-     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask){
+     @Autowired
+     private ProjectService projectService;
 
-          try {
-               Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String username){
+
+               Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
+               //backlogRepository.findByProjectIdentifier(projectIdentifier);
+
                projectTask.setBacklog(backlog);
 
                Integer BacklogSequence = backlog.getPTSequence();
@@ -37,7 +40,7 @@ public class ProjectTaskService {
                projectTask.setProjectIdentifier(projectIdentifier);
 
                //Con React bisognerà aggiungere anche projectTask.getPriority() = 0
-               if (projectTask.getPriority() == 0 || projectTask.getPriority() == null){
+               if ( projectTask.getPriority() == null || projectTask.getPriority() == 0 ){
                     projectTask.setPriority(3);
                }
 
@@ -46,20 +49,12 @@ public class ProjectTaskService {
                }
 
                 return projectTaskRepository.save(projectTask);
-          } catch (Exception e){
-               throw new ProjectNotFoundException("Project not Found");
-          }
-
 
      }
 
-     public Iterable<ProjectTask> findBacklogById(String backlog_id) {
+     public Iterable<ProjectTask> findBacklogById(String backlog_id, String username) {
 
-          Project project = projectRepository.findByProjectIdentifier(backlog_id);
-
-          if (project == null){
-               throw new ProjectNotFoundException("Project with ID: '" + backlog_id + "' does not exist");
-          }
+          projectService.findProjectByIdentifier(backlog_id, username);
 
           return projectTaskRepository.findByProjectIdentifierOrderByPriority(backlog_id);
      }
