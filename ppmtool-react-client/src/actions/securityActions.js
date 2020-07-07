@@ -19,7 +19,7 @@ export const createNewUser = (newUser, history) => async (dispatch) => {
   }
 };
 
-export const Login = (LoginRequest) => async (dispatch) => {
+export const login = (LoginRequest) => async (dispatch) => {
   try {
     // post LoginRequest
     const res = await axios.post("/api/users/login", LoginRequest);
